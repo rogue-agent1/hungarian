@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Hungarian algorithm — optimal assignment in bipartite graphs."""
+"""Hungarian Algorithm — optimal assignment in O(n³)."""
 import sys
 
 def hungarian(cost):
@@ -22,17 +22,14 @@ def hungarian(cost):
             if p[j0] == 0: break
         while j0:
             p[j0] = p[way[j0]]; j0 = way[j0]
-    assignment = [0]*n
+    result = [0]*n
     for j in range(1, m+1):
-        if p[j]: assignment[p[j]-1] = j-1
-    total = sum(cost[i][assignment[i]] for i in range(n))
-    return assignment, total
+        if p[j]: result[p[j]-1] = j-1
+    return result, -v[0]
 
 if __name__ == "__main__":
-    cost = [[9,2,7,8],[6,4,3,7],[5,8,1,8],[7,6,9,4]]
+    cost = [[82,83,69,92],[77,37,49,92],[11,69,5,86],[8,9,98,23]]
     assignment, total = hungarian(cost)
-    print("Cost matrix:")
-    for row in cost: print(f"  {row}")
-    print(f"\nOptimal assignment: {assignment}")
-    print(f"Assignments: {[(i, assignment[i], cost[i][assignment[i]]) for i in range(len(cost))]}")
+    print(f"Assignment: {assignment}")
     print(f"Total cost: {total}")
+    for i, j in enumerate(assignment): print(f"  Worker {i} → Job {j} (cost {cost[i][j]})")
